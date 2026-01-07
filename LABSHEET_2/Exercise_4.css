@@ -1,0 +1,94 @@
+body {
+  font-family: 'Times New Roman', Times, serif;
+  margin: 30px;
+  background: #f6f6f6;
+}
+h1, h2 {
+  text-align: center;
+}
+.user-form {
+  max-width: 500px;
+  margin: 0 auto 20px auto;
+  padding: 15px;
+  background: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.form-group {
+  margin-bottom: 10px;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+}
+.form-group input {
+  width: 100%;
+  padding: 6px;
+  box-sizing: border-box;
+}
+.user-form button {
+  width: 100%;
+  padding: 8px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+.message {
+  text-align: center;
+  min-height: 20px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+.message.error {
+  color:red;
+}
+.message.success {
+  color: green;
+}
+
+.actions {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+button.danger {
+  background: blue;
+  color: #ffffff;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+button.danger:hover {
+  background:blue;
+}
+
+#usersTable {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+}
+
+#usersTable th,
+#usersTable td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+#usersTable th {
+  background: #f0f0f0;
+}
+
+.delete-btn {
+  background: yellowgreen;
+  color: #ffffff;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background: yellowgreen;
+}
