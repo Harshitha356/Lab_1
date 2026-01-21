@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Activity Monitor</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace; 
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            background-color: #34495e;
+            width: 100%;
+            max-width: 900px;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        h2, h3 { margin-top: 0; }
+
+       
+        #warning-banner {
+            background-color: #e74c3c;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            animation: flash 0.5s infinite;
+        }
+
+        @keyframes flash {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .hidden { display: none; }
+
+        .interaction-zone {
+            background: #ecf0f1;
+            color: #2c3e50;
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        input, select, button { padding: 10px; border-radius: 4px; border: 1px solid #bdc3c7; }
+        button { cursor: pointer; font-weight: bold; }
+        .btn.primary { background: #3498db; color: white; border: none; }
+        .btn.secondary { background: #95a5a6; color: white; border: none; }
+        .btn.danger { background: #c0392b; color: white; border: none; }
+     
+        .monitor-zone {
+            background: #000;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #555;
+        }
+
+        .monitor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .log-headers {
+            display: grid;
+            grid-template-columns: 1fr 1fr 2fr 2fr;
+            padding: 5px 10px;
+            border-bottom: 1px solid #555;
+            color: #95a5a6;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        #logContainer {
+            height: 300px;
+            overflow-y: auto;
+            font-size: 0.85rem;
+        }
+
+       
+        .log-entry {
+            display: grid;
+            grid-template-columns: 1fr 1fr 2fr 2fr;
+            padding: 5px 10px;
+            border-bottom: 1px solid #333;
+        }
+
+        .log-entry:hover { background-color: #222; }
+
+        
+        .type-click { color: #2ecc71; } 
+        .type-keydown { color: #3498db; } 
+        .type-focus { color: #f39c12; } 
+        .type-warning { color: #e74c3c; font-weight: bold; } 
+
+        .empty-state { padding: 20px; text-align: center; color: #555; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h2>User Activity Monitor</h2>
+        <div id="warning-banner" class="hidden">⚠️ SUSPICIOUS ACTIVITY DETECTED: RAPID CLICKING!</div>
+    </header>
+
+    <section class="interaction-zone">
+        <h3>1. Test Zone (Interact Here)</h3>
+        <p>Click buttons, type in fields, or tab through inputs to generate logs.</p>
+        
+        <div class="controls">
+            <input type="text" placeholder="Type something..." id="testInput">
+            <button class="btn primary">Click Me</button>
+            <button class="btn secondary">Don't Click Me</button>
+            <select>
+                <option>Option A</option>
+                <option>Option B</option>
+            </select>
+        </div>
+    </section>
+
+    <section class="monitor-zone">
+        <div class="monitor-header">
+            <h3>2. Live Activity Log</h3>
+            <div class="monitor-actions">
+                <button id="exportBtn">Download Log</button>
+                <button id="resetBtn" class="danger">Clear Log</button>
+            </div>
+        </div>
+        
+        <div class="log-headers">
+            <span>Time</span>
+            <span>Type</span>
+            <span>Target Element</span>
+            <span>Details</span>
+        </div>
+        <div id="logContainer">
+            <div class="empty-state">Waiting for activity...</div>
+        </div>
+    </section>
+</div>
+
+<script src="Exercise_4.js"></script>
+
+</body>
+</html>

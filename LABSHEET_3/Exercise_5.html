@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Multi-Stage Form Workflow</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            padding: 20px;
+        }
+        .stage {
+            display: none;
+            margin-top: 20px;
+        }
+        .active {
+            display: block;
+        }
+        .error {
+            color: red;
+            font-size: 13px;
+        }
+        .progress-container {
+            width: 100%;
+            background: #ddd;
+            height: 20px;
+            margin-bottom: 20px;
+        }
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: green;
+            transition: width 0.3s;
+        }
+        button {
+            padding: 6px 12px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>📋 Multi-Stage Client-Side Form</h2>
+
+<div class="progress-container">
+    <div id="progressBar" class="progress-bar"></div>
+</div>
+
+<div class="stage active" id="stage1">
+    <h3>Stage 1: Personal Info</h3>
+    Name: <input type="text" id="name"><br><br>
+    Email: <input type="email" id="email"><br>
+    <div class="error" id="error1"></div>
+    <button onclick="nextStage(1)">Next</button>
+</div>
+
+<div class="stage" id="stage2">
+    <h3>Stage 2: Account Info</h3>
+    Username: <input type="text" id="username"><br><br>
+    Password: <input type="password" id="password"><br>
+    <div class="error" id="error2"></div>
+    <button onclick="prevStage(2)">Back</button>
+    <button onclick="nextStage(2)">Next</button>
+</div>
+
+<div class="stage" id="stage3">
+    <h3>Stage 3: Preferences</h3>
+    <input type="checkbox" id="updates"> Receive Updates<br>
+    <input type="checkbox" id="terms"> Accept Terms<br>
+    <div class="error" id="error3"></div>
+    <button onclick="prevStage(3)">Back</button>
+    <button onclick="nextStage(3)">Next</button>
+</div>
+
+<div class="stage" id="stage4">
+    <h3>Stage 4: Confirmation</h3>
+    <p>Review and submit your details</p>
+    <div class="error" id="error4"></div>
+    <button onclick="prevStage(4)">Back</button>
+    <button onclick="submitForm()">Submit</button>
+</div>
+
+<script src="Exercise_5.js"></script>
+</body>
+</html>

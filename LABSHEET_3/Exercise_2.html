@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Intelligent Shopping Cart</title>
+    <style>
+        body {
+            font-family: Arial;
+            padding: 20px;
+        }
+        img {
+            border-radius: 6px;
+        }
+        table {
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+        button {
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<h2>🛒 Intelligent Shopping Cart</h2>
+
+<select id="productSelect">
+    <option value="Laptop|electronics|50000|laptop.jpg">Laptop</option>
+    <option value="Headphones|electronics|2000|headphones.jpg">Headphones</option>
+    <option value="Shirt|clothing|1500|shirt.jpg">Shirt</option>
+    <option value="Book|education|500|book.jpg">Book</option>
+</select>
+
+<input type="number" id="quantity" value="1" min="1">
+<button onclick="addToCart()">Add to Cart</button>
+
+<br><br>
+
+<input type="text" id="coupon" placeholder="Enter coupon code">
+<button onclick="applyCoupon()">Apply Coupon</button>
+
+<table border="1" width="90%">
+    <thead>
+        <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Qty</th>
+            <th>Total</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody id="cartBody"></tbody>
+</table>
+
+<h3 id="summary"></h3>
+
+<script src="Exercise_2.js"></script>
+</body>
+</html>
