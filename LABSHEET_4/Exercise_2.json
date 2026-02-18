@@ -1,0 +1,8 @@
+[
+    {"name": "iPhone ", "price": 9990, "category": "Smartphones"},
+    {"name": "MacBook ", "price": 79999, "category": "Laptops"},
+    {"name": "AirPods ", "price": 790, "category": "Headphones"},
+    {"name": "Apple Watch", "price": 999, "category": "Wearables"},
+    {"name": "Samsung Galaxy", "price":15000, "category": "Smartphones"},
+    {"name": "Dell XPS", "price": 1499, "category": "Laptops"}
+]

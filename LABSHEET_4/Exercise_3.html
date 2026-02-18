@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management System</title>
+    <style>
+        .container { max-width: 1000px; margin: 20px auto; padding: 20px; font-family: Arial, sans-serif; }
+        .form-section, .table-section { margin-bottom: 30px; }
+        input { padding: 8px; margin: 5px; }
+        button { padding: 8px 15px; margin: 5px; cursor: pointer; }
+        .success { background: #d4edda; color: #155724; padding: 10px; border-radius: 4px; margin-bottom: 10px; }
+        .error { background: #f8d7da; color: #721c24; padding: 10px; border-radius: 4px; margin-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background: #f8f9fa; }
+        .actions button { padding: 5px 10px; margin: 0 2px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Student Management System</h1>
+        
+        <div id="message"></div>
+
+        <div class="form-section">
+            <h2>Add/Update Student</h2>
+            <!-- This hidden field tells us if we are in edit mode -->
+            <input type="hidden" id="editId">
+            <input type="text" id="studentId" placeholder="Student ID">
+            <input type="text" id="studentName" placeholder="Name">
+            <input type="text" id="department" placeholder="Department">
+            <input type="number" id="marks" placeholder="Marks" min="0" max="100">
+            <button onclick="saveStudent()">Save</button>
+            <button onclick="clearForm()">Clear</button>
+        </div>
+
+        <div class="table-section">
+            <h2>Students List</h2>
+            <button onclick="loadStudents()">Refresh</button>
+            <table id="studentsTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Department</th>
+                        <th>Marks</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // In-memory store (simulated backend)
+        let students = [];
+
+        async function loadStudents() {
+            try {
+                // Only fetch if we haven't loaded yet (or you can always reload from file)
+                if (students.length === 0) {
+                    const response = await fetch('Exercise_3.json?t=' + Date.now());
+                    if (!response.ok) {
+                        throw new Error('HTTP ' + response.status);
+                    }
+                    students = await response.json();
+                }
+                displayStudents();
+                showMessage('Students loaded successfully', 'success');
+            } catch (error) {
+                showMessage('Error loading students: ' + error.message, 'error');
+            }
+        }
+
+        function displayStudents() {
+            const tbody = document.querySelector('#studentsTable tbody');
+            if (!students || students.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5">No students available</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = students.map(student => `
+                <tr>
+                    <td>${student.id}</td>
+                    <td>${student.name}</td>
+                    <td>${student.department}</td>
+                    <td>${student.marks}</td>
+                    <td class="actions">
+                        <button onclick="editStudent('${student.id}')">Edit</button>
+                        <button onclick="deleteStudent('${student.id}')">Delete</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function saveStudent() {
+            const editId = document.getElementById('editId').value;
+            const id = document.getElementById('studentId').value.trim();
+            const name = document.getElementById('studentName').value.trim();
+            const department = document.getElementById('department').value.trim();
+            const marksValue = document.getElementById('marks').value;
+
+            if (!id || !name || !department || marksValue === '') {
+                showMessage('Please fill all fields', 'error');
+                return;
+            }
+
+            const marks = parseInt(marksValue, 10);
+            if (isNaN(marks) || marks < 0 || marks > 100) {
+                showMessage('Marks must be between 0 and 100', 'error');
+                return;
+            }
+
+            const student = { id, name, department, marks };
+
+            if (editId) {
+                // Update existing
+                const index = students.findIndex(s => s.id === editId);
+                if (index !== -1) {
+                    students[index] = student;
+                    showMessage('Student updated successfully', 'success');
+                } else {
+                    showMessage('Student not found for update', 'error');
+                }
+            } else {
+                // Create new
+                const exists = students.some(s => s.id === id);
+                if (exists) {
+                    showMessage('Student ID already exists', 'error');
+                    return;
+                }
+                students.push(student);
+                showMessage('Student added successfully', 'success');
+            }
+
+            clearForm();
+            displayStudents();
+        }
+
+        function editStudent(id) {
+            const student = students.find(s => s.id === id);
+            if (!student) {
+                showMessage('Student not found', 'error');
+                return;
+            }
+
+            document.getElementById('editId').value = student.id;
+            document.getElementById('studentId').value = student.id;
+            document.getElementById('studentName').value = student.name;
+            document.getElementById('department').value = student.department;
+            document.getElementById('marks').value = student.marks;
+        }
+
+        function deleteStudent(id) {
+            if (!confirm('Are you sure you want to delete this student?')) {
+                return;
+            }
+
+            const index = students.findIndex(s => s.id === id);
+            if (index === -1) {
+                showMessage('Student not found', 'error');
+                return;
+            }
+
+            students.splice(index, 1);
+            showMessage('Student deleted successfully', 'success');
+            displayStudents();
+        }
+
+        function clearForm() {
+            document.getElementById('editId').value = '';
+            document.getElementById('studentId').value = '';
+            document.getElementById('studentName').value = '';
+            document.getElementById('department').value = '';
+            document.getElementById('marks').value = '';
+        }
+
+        function showMessage(msg, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = msg;
+            messageDiv.className = type;
+            if (msg) {
+                setTimeout(() => {
+                    messageDiv.textContent = '';
+                    messageDiv.className = '';
+                }, 3000);
+            }
+        }
+
+        // Initial load
+        loadStudents();
+    </script>
+</body>
+</html>

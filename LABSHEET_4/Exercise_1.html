@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Username Availability Checker</title>
+    <style>
+        .container { max-width: 400px; margin: 50px auto; padding: 20px; }
+        .form-group { margin-bottom: 15px; }
+        input { width: 100%; padding: 10px; box-sizing: border-box; }
+        .feedback { padding: 10px; margin-top: 5px; border-radius: 4px; }
+        .loading { background: #fff3cd; color: #7a8504; }
+        .available { background: #d4deed; color: #155724; }
+        .taken { background: #f8d7e6; color: #721c24; }
+        button:disabled { opacity: 0.6; cursor: not-allowed; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Registration Form</h2>
+        <form id="regForm">
+            <div class="form-group">
+                <label>Username:</label>
+                <input type="text" id="username" required minlength="3">
+                <div id="feedback" class="feedback" style="display: none;"></div>
+            </div>
+            <button type="submit" id="submitBtn">Register</button>
+        </form>
+    </div>
+
+    <script>
+        const usernameInput = document.getElementById('username');
+        const feedback = document.getElementById('feedback');
+        const submitBtn = document.getElementById('submitBtn');
+        const form = document.getElementById('regForm');
+        let isUsernameAvailable = false;
+
+        usernameInput.addEventListener('input', debounce(checkUsername, 500));
+
+        async function checkUsername() {
+            const username = usernameInput.value.trim();
+            if (username.length < 3) {
+                hideFeedback();
+                return;
+            }
+
+            showLoading();
+
+            try {
+                const response = await fetch(`Exercise_1.json?t=${Date.now()}`);
+                const usernames = await response.json();
+                
+                if (usernames.includes(username)) {
+                    showFeedback('Username already taken', 'taken');
+                    isUsernameAvailable = false;
+                } else {
+                    showFeedback('Username available', 'available');
+                    isUsernameAvailable = true;
+                }
+            } catch (error) {
+                showFeedback('Error checking availability', 'taken');
+            }
+        }
+
+        function showLoading() {
+            showFeedback('Checking availability...', 'loading');
+        }
+
+        function showFeedback(message, type) {
+            feedback.textContent = message;
+            feedback.className = `feedback ${type}`;
+            feedback.style.display = 'block';
+        }
+
+        function hideFeedback() {
+            feedback.style.display = 'none';
+            isUsernameAvailable = false;
+        }
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (!isUsernameAvailable) {
+                alert('Please choose an available username');
+                return;
+            }
+            alert('Registration successful!');
+        });
+
+        function debounce(func, delay) {
+            let timeout;
+            return function(...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), delay);
+            };
+        }
+    </script>
+</body>
+</html>
