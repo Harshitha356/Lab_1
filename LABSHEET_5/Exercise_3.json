@@ -1,0 +1,5 @@
+[
+  { "id": "1", "name": "Ravi", "course": "B.Tech", "marks": 85 },
+  { "id": "4", "name": "Sita", "course": "B.Sc", "marks": 92 },
+  { "id": "6", "name": "Ramu", "course": "BEd", "marks": 89 }
+]
