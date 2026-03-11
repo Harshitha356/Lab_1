@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Student Notes</title>
+</head>
+
+<body>
+
+<h2>Add Note</h2>
+
+<input id="title" placeholder="Title"><br><br>
+<input id="subject" placeholder="Subject"><br><br>
+<input id="description" placeholder="Description"><br><br>
+
+<button onclick="addNote()">Add Note</button>
+
+<h2>Notes</h2>
+<div id="notes"></div>
+
+<script>
+
+const API = "http://localhost:5000/notes";
+
+// Add Note
+function addNote(){
+ fetch(API,{
+   method:"POST",
+   headers:{"Content-Type":"application/json"},
+   body:JSON.stringify({
+     title: title.value,
+     subject: subject.value,
+     description: description.value
+   })
+ }).then(()=>loadNotes());
+}
+
+// View Notes
+function loadNotes(){
+ fetch(API)
+ .then(res=>res.json())
+ .then(data=>{
+   notes.innerHTML="";
+   data.forEach(n=>{
+     notes.innerHTML += `
+       <p>
+       <b>${n.title}</b> (${n.subject}) <br>
+       ${n.description}
+       <button onclick="deleteNote('${n._id}')">Delete</button>
+       </p>
+     `;
+   });
+ });
+}
+
+// Delete Note
+function deleteNote(id){
+ fetch(API+"/"+id,{method:"DELETE"})
+ .then(()=>loadNotes());
+}
+
+loadNotes();
+
+</script>
+
+</body>
+</html>

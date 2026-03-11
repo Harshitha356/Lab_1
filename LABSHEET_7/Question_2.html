@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Online Book Finder</h2>
+
+<input id="title" placeholder="Search title">
+<button onclick="search()">Search</button>
+
+<button onclick="topBooks()">Top Rated</button>
+<button onclick="sortPrice()">Sort by Price</button>
+<button onclick="loadPage()">Load Page 1</button>
+
+<div id="result"></div>
+
+<script>
+
+const API="http://localhost:5000";
+
+function show(data){
+ result.innerHTML="";
+ data.forEach(b=>{
+  result.innerHTML+=`
+  <p>
+  <b>${b.title}</b><br>
+  Category: ${b.category}<br>
+  Price: ${b.price}<br>
+  Rating: ${b.rating}
+  </p><hr>`;
+ });
+}
+
+// Search
+function search(){
+ fetch(API+"/books/search?title="+title.value)
+ .then(r=>r.json())
+ .then(show);
+}
+
+// Top rated
+function topBooks(){
+ fetch(API+"/books/top")
+ .then(r=>r.json())
+ .then(show);
+}
+
+// Sort price
+function sortPrice(){
+ fetch(API+"/books/sort/price")
+ .then(r=>r.json())
+ .then(show);
+}
+
+// Pagination
+function loadPage(){
+ fetch(API+"/books?page=1")
+ .then(r=>r.json())
+ .then(show);
+}
+
+</script>
+
+</body>
+</html>
