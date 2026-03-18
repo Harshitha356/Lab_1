@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Exercise 2 - Student Grades (User Input)</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f8ff;
+      padding: 40px;
+      text-align: center;
+    }
+    h2 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+    input {
+      padding: 8px;
+      margin: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      padding: 8px 16px;
+      margin-top: 10px;
+      background: #2196f3;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #output {
+      margin: 0 auto;
+      margin-top: 20px;
+      max-width: 500px;
+      background: #e3f2fd;
+      padding: 20px;
+      border-radius: 10px;
+      border-left: 5px solid #2196f3;
+      font-size: 16px;
+      text-align: left;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <h2>Student Object with Grade (User Input)</h2>
+
+  <input id="sid" type="number" placeholder="Student ID">
+  <input id="sname" type="text" placeholder="Student Name">
+  <input id="dept" type="text" placeholder="Department">
+  <input id="marks" type="number" placeholder="Marks (0-100)" max="100">
+  <br>
+  <button onclick="processStudent()">Proceed</button>
+
+  <div id="output">Enter details and click Proceed</div>
+
+  <script>
+    const processStudent = () => {
+      const id = Number(document.getElementById('sid').value);
+      const name = document.getElementById('sname').value;
+      const department = document.getElementById('dept').value;
+      const marks = Number(document.getElementById('marks').value);
+
+      if (!id || !name || !department || isNaN(marks)) {
+        document.getElementById('output').textContent = '❌ Please fill ALL fields correctly!';
+        return;
+      }
+
+      const student = { id, name, department, marks };
+
+      const { id: sid, name: sname, department: dept, marks: score } = student;
+
+      let grade;
+      if (score >= 90) grade = "A";
+      else if (score >= 80) grade = "B";
+      else if (score >= 70) grade = "C";
+      else if (score >= 60) grade = "D";
+      else grade = "F";
+
+      const updatedStudent = {
+        ...student,
+        grade
+      };
+
+      document.getElementById('output').textContent =
+        `${sid} ${sname} ${dept} ${score}\n\n` +
+        JSON.stringify(updatedStudent, null, 2);
+    };
+  </script>
+</body>
+</html>

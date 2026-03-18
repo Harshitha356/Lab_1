@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Marks Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            background: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            backdrop-filter: blur(10px);
+        }
+        h2 {
+            background: greenyellow;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 30px;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        button {
+            background: black;
+            color: #d63384;
+            border: 2px solid #ff8fab;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);
+            margin-bottom: 30px;
+        }
+        button:hover {
+            background: linear-gradient(45deg, #fed6e3, #a8edea);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(255, 107, 107, 0.4);
+            color: #ff6b6b;
+        }
+        button:active {
+            transform: translateY(-2px) scale(1.02);
+        }
+        #result {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 15px;
+            padding: 30px;
+            font-size: 18px;
+            line-height: 1.6;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        }
+        .result-line {
+            margin-bottom: 12px;
+            font-weight: 500;
+            opacity: 0.95;
+        }
+        .avg-marks {
+            color: #ffd700;
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 8px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>📊 Student Marks Calculator</h2>
+        <button onclick="calculate()">✨ Calculate Marks</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const calculate = () => {
+            let studentName = prompt("Enter Student Name:");
+            let mark1 = Number(prompt("Enter Mark 1 (0-100):"));
+            let mark2 = Number(prompt("Enter Mark 2 (0-100):"));
+            let mark3 = Number(prompt("Enter Mark 3 (0-100):"));
+
+            const total = (m1, m2, m3) => m1 + m2 + m3;
+            const average = (t) => t / 3;
+
+            let totalMarks = total(mark1, mark2, mark3);
+            let avgMarks = average(totalMarks);
+
+            document.getElementById("result").innerHTML = `
+                <div class="result-line"><strong>👤 Student:</strong> ${studentName}</div>
+                <div class="result-line"><strong>📈 Total Marks:</strong> ${totalMarks}</div>
+                <div class="avg-marks">⭐ Average: ${avgMarks.toFixed(2)}</div>
+            `;
+        };
+    </script>
+</body>
+</html>
