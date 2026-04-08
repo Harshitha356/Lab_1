@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Node.js REST API Tester</title>
+  <style>body{font-family:Arial;max-width:900px;margin:0 auto;padding:20px;}
+  button{background:#28a745;color:white;padding:10px;border:none;border-radius:5px;cursor:pointer;margin:5px;}
+  button:hover{background:#218838;}input{padding:8px;margin:5px;border-radius:4px;}#log{background:#f8f9fa;padding:15px;border-radius:8px;margin:15px 0;font-family:monospace;max-height:400px;overflow:auto;}</style>
+</head>
+<body>
+<h1>🔧 REST API Tester (localhost:4000)</h1>
+<button onclick="test('GET','/api/users')">📋 GET Users</button><button onclick="test('GET','/api/users/1')">👤 User 1</button>
+<input id=n placeholder="Name" value=Diana><input id=e placeholder="Email" value=diana@test.com><button onclick=create()>➕ POST</button>
+<input id=id value=1 size=2>ID <input id=n2 placeholder="New name"><button onclick=update()>✏️ PUT</button><button onclick=del()>🗑️ DELETE</button>
+<div id=log>Click buttons</div>
+<script>
+async function test(m,p,b=''){log(`${m.padEnd(7)} ${p}`);try{const r=await fetch('http://localhost:4000'+p,{method:m,headers:{'Content-Type':'application/json'},body:b});const d=await r.json();log(`${r.status}\n${JSON.stringify(d,null,2)}`)}catch(e){log('❌ '+e)}}
+async function create(){test('POST','/api/users',JSON.stringify({name:document.getElementById('n').value,email:document.getElementById('e').value}))}
+async function update(){test('PUT','/api/users/'+document.getElementById('id').value,JSON.stringify({name:document.getElementById('n2').value}))}
+async function del(){test('DELETE','/api/users/'+document.getElementById('id').value)}
+function log(m){document.getElementById('log').textContent+='\n'+m;document.getElementById('log').scrollTop=document.getElementById('log').scrollHeight}
+</script>
+</body>
+</html>

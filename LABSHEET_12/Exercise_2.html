@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>No-npm Middleware Demo</title>
+  <style>body{font-family:Arial;max-width:900px;margin:0 auto;padding:20px;background:#f0f8ff;}
+  button{background:#17a2b8;color:white;padding:12px;border:none;border-radius:6px;cursor:pointer;margin:5px;font-weight:bold;}
+  button:hover{background:#138496;}.endpoint{background:white;padding:20px;margin:15px 0;border-radius:10px;box-shadow:0 2px 5px rgba(0,0,0,0.1);}
+  input{padding:10px;margin:5px;border-radius:5px;border:1px solid #ddd;}#log{background:#1a1a1a;color:#00ff00;padding:15px;border-radius:8px;font-family:'Courier New';height:450px;overflow:auto;}</style>
+</head>
+<body>
+<h1>🔗 Pure Node.js Middleware Chain</h1>
+<p><strong>No npm!</strong> <code>node Exercise_2.js</code> → Watch console MW order</p>
+
+<div class="endpoint">
+  <button onclick="test('/', 'GET')">🏠 Home (Global MW)</button>
+  <button onclick="test('/public', 'GET')">📄 Public (Skip API MW)</button>
+</div>
+
+<div class="endpoint">
+  <button onclick="test('/api/users', 'GET')">👥 API/Users (Full Chain)</button>
+  <button onclick="test('/api/login', 'POST')">🔑 API/Login POST</button>
+</div>
+
+<div class="endpoint">
+  <input id="user" value="alice" placeholder="Username">
+  <input id="pass" type="password" value="secret" placeholder="Password">
+  <button onclick="doLogin()">🚪 Login</button>
+</div>
+
+<button onclick="test('/404', 'GET')" style="background:#dc3545;">❌ 404 Test</button>
+
+<div id="log">Ready - Click buttons & check TERMINAL!</div>
+
+<script>
+async function test(path, method) {
+  log(`➡️  ${method} ${path}`);
+  try {
+    const res = await fetch('http://localhost:4000'+path, {
+      method,
+      headers: {'Content-Type': 'application/json'},
+      body: method==='POST' ? JSON.stringify({
+        username: document.getElementById('user').value,
+        password: document.getElementById('pass').value
+      }) : null
+    });
+    const data = await res.json();
+    log(`✅ ${res.status} ${JSON.stringify(data, null, 2)}\n`);
+  } catch(e) {
+    log(`❌ ${e.message}\n`);
+  }
+}
+
+function doLogin() {
+  test('/api/login', 'POST');
+}
+
+function log(msg) {
+  document.getElementById('log').textContent += msg + '\n';
+  document.getElementById('log').scrollTop = document.getElementById('log').scrollHeight;
+}
+</script>
+</body>
+</html>

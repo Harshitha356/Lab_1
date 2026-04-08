@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exercise 3: MongoDB CRUD (File DB)</title>
+  <style>
+    body { 
+      font-family: 'Segoe UI', sans-serif; 
+      background: linear-gradient(135deg, #1e3c72, #2a5298); 
+      color: white; 
+      padding: 20px; 
+      margin: 0; 
+      min-height: 100vh;
+    }
+    .container { max-width: 1000px; margin: 0 auto; }
+    h1 { text-align: center; margin-bottom: 30px; font-size: 2.2em; }
+    .card { 
+      background: rgba(255,255,255,0.1); 
+      backdrop-filter: blur(15px); 
+      border-radius: 20px; 
+      padding: 30px; 
+      margin: 20px 0; 
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    button { 
+      background: linear-gradient(45deg, #ff6b6b, #4ecdc4); 
+      color: white; 
+      border: none; 
+      padding: 15px 25px; 
+      margin: 8px; 
+      border-radius: 12px; 
+      cursor: pointer; 
+      font-size: 16px; 
+      font-weight: bold; 
+      transition: all 0.3s;
+    }
+    button:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,0,0,0.3); }
+    input { 
+      padding: 12px; 
+      margin: 8px; 
+      border-radius: 8px; 
+      border: 1px solid rgba(255,255,255,0.3); 
+      background: rgba(255,255,255,0.1); 
+      color: white; 
+      width: 220px; 
+      font-size: 16px;
+    }
+    input::placeholder { color: rgba(255,255,255,0.7); }
+    #output { 
+      background: rgba(0,0,0,0.4); 
+      border-radius: 15px; 
+      padding: 25px; 
+      margin-top: 25px; 
+      min-height: 400px; 
+      overflow-y: auto; 
+      font-family: 'Courier New', monospace; 
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+    .success { color: #4ecdc4; }
+    .error { color: #ff6b6b; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🏪 Exercise 3: CRUD Operations (File Database)</h1>
+    <p style="text-align:center; font-size:1.1em;">Run <code style="background:rgba(0,0,0,0.3);padding:8px 15px;border-radius:8px;">node Exercise_3.js</code><br>Creates <code>users.json</code> automatically - No MongoDB needed!</p>
+    
+    <div class="card">
+      <h3>📋 READ Operations</h3>
+      <button onclick="crud('GET', '/api/users')">📊 GET All Users</button>
+      <button onclick="crud('GET', '/api/users/1')">👤 GET User ID 1</button>
+    </div>
+    
+    <div class="card">
+      <h3>➕ CREATE User</h3>
+      <input id="cname" placeholder="Name" value="Diana">
+      <input id="cemail" placeholder="Email" value="diana@test.com">
+      <input id="cage" type="number" placeholder="Age" value="26">
+      <button onclick="createUser()">➕ CREATE</button>
+    </div>
+    
+    <div class="card">
+      <h3>✏️ UPDATE / 🗑️ DELETE</h3>
+      <input id="uid" value="1" size="4" placeholder="User ID"> 
+      <input id="uname" placeholder="New Name" value="Diana Updated">
+      <button onclick="updateUser()">✏️ UPDATE</button>
+      <button onclick="deleteUser()" style="background:#ff4444;">🗑️ DELETE</button>
+    </div>
+    
+    <div id="output">🔥 Ready to test CRUD operations!\nSaved to users.json file...</div>
+  </div>
+
+  <script>
+    async function crud(method, endpoint) {
+      const output = document.getElementById('output');
+      const bodyData = method === 'POST' ? {
+        name: document.getElementById('cname').value,
+        email: document.getElementById('cemail').value,
+        age: parseInt(document.getElementById('cage').value || 0)
+      } : null;
+      
+      output.textContent = `${method} ${endpoint}...`;
+      
+      try {
+        const response = await fetch(`http://localhost:4000${endpoint}`, {
+          method,
+          headers: { 'Content-Type': 'application/json' },
+          body: bodyData ? JSON.stringify(bodyData) : null
+        });
+        
+        const result = await response.json();
+        output.innerHTML += `<span class="success">\n✅ ${response.status}: ${JSON.stringify(result, null, 2)}</span>\n`;
+      } catch (error) {
+        output.innerHTML += `<span class="error">\n❌ ${error.message}\n💡 node Exercise_3.js</span>`;
+      }
+      
+      output.scrollTop = output.scrollHeight;
+    }
+    
+    function createUser() { crud('POST', '/api/users'); }
+    function updateUser() { 
+      const id = document.getElementById('uid').value;
+      crud('PUT', `/api/users/${id}`, { name: document.getElementById('uname').value }); 
+    }
+    function deleteUser() { 
+      const id = document.getElementById('uid').value;
+      crud('DELETE', `/api/users/${id}`); 
+    }
+  </script>
+</body>
+</html>
