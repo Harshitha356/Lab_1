@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exercise 2: Node.js FS Module</title>
+  <style>
+    body { font-family: Arial; max-width: 900px; margin: 0 auto; padding: 20px; background: #f8f9fa; }
+    h1 { color: #333; }
+    pre { background: #2d3748; color: #a0aec0; padding: 15px; border-radius: 8px; overflow-x: auto; }
+    button { background: #28a745; color: white; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; }
+    #output { background: white; padding: 20px; border-radius: 8px; margin-top: 20px; }
+    .log { margin: 10px 0; padding: 10px; border-radius: 4px; font-family: monospace; }
+  </style>
+</head>
+<body>
+  <h1>Node.js File System Operations</h1>
+  <p>Run <code>node Exercise_2.js</code> in terminal. Watch console for async flow.</p>
+  
+  <button onclick="simulate()">Simulate Output</button>
+  <div id="output">Terminal output appears here after running script...</div>
+
+  <script>
+    function simulate() {
+      document.getElementById('output').innerHTML = 
+      `<div class="log" style="background:#d4edda;">
+1️⃣ Creating data.txt...<br>✅ File created
+</div>
+<div class="log" style="background:#d1ecf1;">
+2️⃣ Reading data.txt...<br>📖 Content: Hello Node.js FS!
+</div>
+<div class="log" style="background:#d4edda;">
+3️⃣ Appending...<br>✅ Appended
+</div>
+<div class="log" style="background:#d1ecf1;">
+📖 Final: Hello Node.js FS!\\nAppended line 2!
+</div>
+<div class="log" style="background:#d4edda;">
+4️⃣ Deleting...<br>🗑️ File deleted! ✅ Complete
+</div>`;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exercise 1: Node.js HTTP Server</title>
+  <style>
+    body { font-family: Arial; max-width: 900px; margin: 0 auto; padding: 20px; background: #f8f9fa; }
+    h1 { color: #333; }
+    pre { background: #2d3748; color: #a0aec0; padding: 15px; border-radius: 8px; overflow-x: auto; }
+    button { background: #007bff; color: white; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; margin: 5px; }
+    #output { background: white; padding: 20px; border-radius: 8px; margin-top: 20px; min-height: 150px; }
+    .status { padding: 10px; margin: 10px 0; border-radius: 4px; font-family: monospace; }
+    .success { background: #d4edda; color: #155724; }
+    .error { background: #f8d7da; color: #721c24; }
+  </style>
+</head>
+<body>
+  <h1>Exercise 1: Node.js HTTP Server</h1>
+  <p>Terminal: <code>node Exercise_1.js</code>, then test in browser <code>http://localhost:3000/</code></p>
+
+  <h2>Exercise_1.js Code</h2>
+  <pre>const http = require('http');
+
+const server = http.createServer((req, res) => {
+  res.setHeader('Content-Type', 'text/html');
+  
+  if (req.url === '/') {
+    res.writeHead(200);
+    res.write('<h1>Node.js Server ✅</h1>');
+    res.end('<p>All requirements met!</p>');
+  } else if (req.url === '/status') {
+    res.writeHead(200);
+    res.end('<h2>Server Running!</h2>');
+  } else {
+    res.writeHead(404);
+    res.end('404 Not Found');
+  }
+});
+
+server.listen(3000, () => {
+  console.log('Server: http://localhost:3000/');
+});</pre>
+
+  <button onclick="testServer('/')">Test Home (/)</button>
+  <button onclick="testServer('/status')">Test Status</button>
+  <button onclick="testServer('/404')">Test 404</button>
+  <div id="output">Click to test server (run node Exercise_1.js first!)</div>
+
+  <script>
+    async function testServer(path) {
+      document.getElementById('output').innerHTML = `Testing ${path}...`;
+      try {
+        const res = await fetch('http://localhost:3000' + path);
+        const data = await res.text();
+        document.getElementById('output').innerHTML = 
+          `<div class="status success">✅ ${res.status}: ${data.substring(0,100)}...</div>`;
+      } catch(e) {
+        document.getElementById('output').innerHTML = 
+          `<div class="status error">❌ ${e.message}<br><small>Run: node Exercise_1.js</small></div>`;
+      }
+    }
+  </script>
+</body>
+</html>

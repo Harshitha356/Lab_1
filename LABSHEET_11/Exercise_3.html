@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exercise 3: Node.js Events Demo</title>
+  <style>
+    body { font-family: Arial; max-width: 900px; margin: 0 auto; padding: 20px; background: #f8f9fa; }
+    h1 { color: #333; }
+    pre { background: #2d3748; color: #a0aec0; padding: 15px; border-radius: 8px; overflow-x: auto; }
+    button { background: #ffc107; color: #212529; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; margin: 5px; font-weight: bold; }
+    #output { background: white; padding: 20px; border-radius: 8px; margin-top: 20px; min-height: 300px; }
+    .event { margin: 10px 0; padding: 12px; border-radius: 6px; font-family: monospace; font-weight: bold; }
+    .user-login { background: #d1ecf1; color: #0c5460; border-left: 4px solid #17a2b8; }
+    .order-placed { background: #d4edda; color: #155724; border-left: 4px solid #28a745; }
+    .payment-processed { background: #fff3cd; color: #856404; border-left: 4px solid #ffc107; }
+  </style>
+</head>
+<body>
+  <h1>Exercise 3: Event-Driven Node.js</h1>
+  <p>Terminal: <code>node Exercise_3.js</code>. Watch event cascade!</p>
+
+  <h2>Exercise_3.js Code</h2>
+  <pre>const EventEmitter = require('events');
+const myEmitter = new EventEmitter();
+
+myEmitter.on('userLogin', (user) => console.log(`👤 ${user} logged in`));
+myEmitter.on('orderPlaced', (orderId, amount) => console.log(`🛒 Order #${orderId}: $${amount}`));
+
+myEmitter.emit('userLogin', 'alice@example.com');
+myEmitter.emit('orderPlaced', 123, 99.99);</pre>
+
+  <button onclick="simulateEvents()">🎉 Simulate Event Flow</button>
+  <div id="output">Events fire asynchronously in Node.js Event Loop...</div>
+
+  <script>
+    function simulateEvents() {
+      const output = document.getElementById('output');
+      output.innerHTML = '';
+      
+      // Simulate event cascade
+      setTimeout(() => output.innerHTML += '<div class="event user-login">👤 alice@example.com logged in</div>', 200);
+      setTimeout(() => output.innerHTML += '<div class="event user-login">👤 bob@example.com logged in</div>', 500);
+      setTimeout(() => output.innerHTML += '<div class="event order-placed">🛒 Order #123: $99.99</div>', 900);
+      setTimeout(() => output.innerHTML += '<div class="event order-placed">🛒 Order #124: $149.50</div>', 1200);
+      setTimeout(() => output.innerHTML += '<div class="event payment-processed">💳 Payment processed for Order #123</div>', 1600);
+    }
+  </script>
+</body>
+</html>
